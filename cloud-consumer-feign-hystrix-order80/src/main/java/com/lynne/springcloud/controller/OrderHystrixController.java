@@ -7,6 +7,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 
@@ -21,6 +22,9 @@ public class OrderHystrixController {
 
     @Resource
     private OrderHystrixService orderHystrixService;
+
+    @Resource
+    private RestTemplate restTemplate;
 
     @HystrixCommand(fallbackMethod = "paymentInfo_timeOutFallBackMethod",commandProperties = {
             @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value = "2000")
@@ -44,4 +48,18 @@ public class OrderHystrixController {
     public String payment_Global_FallbackMethod(){
         return "Global异常处理信息，请稍后再试,(┬＿┬)";
     }
+
+    @GetMapping("/consumer/payment/zipkin")
+    public String paymentZipkin()
+    {
+        String result = restTemplate.getForObject("http://localhost:8001"+"/payment/zipkin/", String.class);
+        return result;
+    }
+    @GetMapping("/consumer/payment/zipkin1")
+    public String paymentZipkin1()
+    {
+        String result = orderHystrixService.paymentZipkin();
+        return result;
+    }
+
 }

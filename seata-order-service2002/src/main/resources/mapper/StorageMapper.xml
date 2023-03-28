@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lynne.springcloud.alibaba.dao.StorageDao">
+
+    <insert id="create" parameterType="com.lynne.springcloud.alibaba.domain.Storage">
+        insert into t_storage(product_id,total,used,residue)
+        values(${productId},${total},${used},${residue})
+    </insert>
+    <update id="update">
+        update t_storage set used = used +#{count},residue = residue -#{count}
+        where product_id = #{productId}
+    </update>
+</mapper>

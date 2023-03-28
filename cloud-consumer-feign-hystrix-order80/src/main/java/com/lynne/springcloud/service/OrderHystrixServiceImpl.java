@@ -19,4 +19,9 @@ public class OrderHystrixServiceImpl implements OrderHystrixService{
     public String paymentInfo_timeOut(Integer id) {
         return "走了实现的方法了，paymentInfo_timeOut";
     }
+
+    @Override
+    public String paymentZipkin() {
+        return null;
+    }
 }

@@ -7,6 +7,12 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka  #集群版
+
 spring:
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+    probability: 1
   application:
     name: cloud-provider-hystrix-payment
