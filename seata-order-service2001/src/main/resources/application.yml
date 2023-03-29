@@ -2,6 +2,8 @@ server:
   port: 2001
 
 spring:
+  profiles:
+    active: seata
   application:
     name: seata-order-service
   datasource:
@@ -11,26 +13,41 @@ spring:
     username: root
     password: root
   cloud:
-    seata:
-      enable: true
-      tx-service-group: my_tx_group
-      service:
-        vgroup-mapping:
-          my_tx_group: default
-        registry:
-          type: nacos
-          nacos:
-            application: seata-server
-            server-addr: localhost:8848
-            namespace: seata
-            group: DEFAULT_GROUP
-        config:
-          type: nacos #配置中心
-          nacos:
-            server-addr: localhost:8848
-            #namespace: seata
-            group: DEFAULT_GROUP
-            data-id: seataServer.properties
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: seata
+    alibaba:
+      seata:
+        #自定义事务组名称需要与seata-server中的对应
+        tx-service-group: my_tx_group
+seata:
+  application-id: ${spring.application.name}
+  enable: true
+  tx-service-group: my_tx_group
+  service:
+    vgroupMapping:
+      my_tx_group: default
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: localhost:8848
+      namespace: seata
+      cluster: default
+      group: DEFAULT_GROUP
+      username: nacos
+      password: nacos
+  config:
+    type: nacos #配置中心
+    nacos:
+      server-addr: localhost:8848
+      namespace: seata
+      group: DEFAULT_GROUP
+      data-id: "seataServer.properties"
+      username: nacos
+      password: nacos
+
 logging:
   level:
     io:
